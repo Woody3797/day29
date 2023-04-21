@@ -1,6 +1,5 @@
 package ibf2022.paf.day29.repository;
 
-import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -48,8 +47,10 @@ public class RSVPRepository {
             ps.setString(6, rsvp.getFoodType());
             return ps;
         }, keyHolder);
-        BigInteger primaryKeyValue = (BigInteger) keyHolder.getKey();
-        rsvp.setId(primaryKeyValue.intValue());
+        Number primaryKeyValue = keyHolder.getKey();
+        if (primaryKeyValue != null) {
+            rsvp.setId(primaryKeyValue.intValue());
+        }
         if (rsvp.getId() > 0) {
             rsvp.setConfirmationDate(null);
             mongoTemplate.insert(rsvp, "rsvp");
