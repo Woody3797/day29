@@ -28,19 +28,19 @@ public class RSVPRestController {
     private RSVPService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> saveRSVP(@RequestBody String json) throws Exception {
-        JsonObject response = null;
-        RSVP rsvp = RSVP.create(json);
-        RSVP result = service.insertRSVP(rsvp);
-        response = Json.createObjectBuilder()
-        .add("rsvpId", result.getId())
-        .build();
-        // try {
-        // } catch (Exception e) {
-        //     JsonObject errResp = Json.createObjectBuilder().add("error", e.getMessage()).build();
-        //     return ResponseEntity.badRequest().body(errResp.toString());
-        // }
-        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(response.toString());
+    public ResponseEntity<String> saveRSVP(@RequestBody String json) {
+        try {
+            JsonObject response = null;
+            RSVP rsvp = RSVP.create(json);
+            RSVP result = service.insertRSVP(rsvp);
+            response = Json.createObjectBuilder()
+            .add("rsvpId", result.getId())
+            .build();
+            return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(response.toString());
+        } catch (Exception e) {
+            JsonObject errResp = Json.createObjectBuilder().add("error", e.getMessage()).build();
+            return ResponseEntity.badRequest().body(errResp.toString());
+        }
     }
 
     @GetMapping(path = "/count")
