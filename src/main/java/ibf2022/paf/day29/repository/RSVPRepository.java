@@ -58,14 +58,12 @@ public class RSVPRepository {
         return rsvp;
     }
 
-
     public List<AggregationRSVP> aggregateByFoodType() {
         ProjectionOperation project = Aggregation.project("name", "foodType");
         GroupOperation group = Aggregation.group("foodType")
         .push("name")
         .as("names")
         .count().as("count");
-
         SortOperation sort = Aggregation.sort(Sort.by(Direction.DESC, "count"));
 
         Aggregation pipeline = Aggregation.newAggregation(project, group, sort);
